@@ -36,6 +36,8 @@ public class RealEstateServiceImpl implements IRealEstateService{
 
     @Override
     public void delete(Long id) {
+        realEstateRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
         realEstateRepository.deleteById(id);
     }
 }
