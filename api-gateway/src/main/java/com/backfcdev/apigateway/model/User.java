@@ -2,11 +2,13 @@ package com.backfcdev.apigateway.model;
 
 import com.backfcdev.apigateway.enums.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @Entity
 @Table(name="users")
 public class User {
