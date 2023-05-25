@@ -24,6 +24,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User save(User user) {
         User userCreated = User.builder()
+                .name(user.getName())
+                .username(user.getUsername())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .role(Role.USER)
                 .createdDate(LocalDateTime.now())
