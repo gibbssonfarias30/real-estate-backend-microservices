@@ -1,6 +1,7 @@
 package com.backfcdev.apigateway.security;
 
 
+import com.backfcdev.apigateway.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @RequiredArgsConstructor
@@ -20,13 +22,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
-
     private final PasswordEncoder passwordEncoder;
 
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter(){
+        return new JwtAuthorizationFilter();
     }
 
 
@@ -40,23 +46,16 @@ public class SecurityConfig {
 
         AuthenticationManager authenticationManager = auth.build();
 
-        http.csrf()
+        return http.csrf()
                 .disable()
-                .cors()
-                .disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/authentication/sign-in", "/api/authentication/sign-up")
-                .permitAll()
+                    .requestMatchers("/api/v1/auth/**").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                 .authenticationManager(authenticationManager)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        return http.build();
-
-
-
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
-
-
-
 }
