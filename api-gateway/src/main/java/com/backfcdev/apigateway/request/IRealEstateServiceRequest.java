@@ -9,7 +9,7 @@ import java.util.List;
 @FeignClient(
         value = "real-estate-service",
         path = "/api/v1/real-estate",
-        url = "${real-estate.service.url}",
+        //url = "${real-estate.service.url}",
         configuration = FeignConfiguration.class
 )
 public interface IRealEstateServiceRequest {
