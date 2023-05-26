@@ -8,7 +8,7 @@ import java.util.List;
 
 @FeignClient(
         value = "purchase-service",
-        path = "/api/v1/purchase",
+        path = "/api/v1/purchases",
         url = "${purchase.service.url}",
         configuration = FeignConfiguration.class
 )
