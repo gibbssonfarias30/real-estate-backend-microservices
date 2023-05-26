@@ -58,6 +58,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/v1/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/gateway/real-estate").permitAll()
                     .requestMatchers( "/gateway/real-estate/**").hasRole(Role.ADMIN.name())
+                    .requestMatchers( "/gateway/purchase/**").hasRole(Role.ADMIN.name())
                     .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
