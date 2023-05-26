@@ -1,10 +1,12 @@
 package com.backfcdev.apigateway.security;
 
 
+import com.backfcdev.apigateway.enums.Role;
 import com.backfcdev.apigateway.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -46,15 +48,18 @@ public class SecurityConfig {
 
         AuthenticationManager authenticationManager = auth.build();
 
-        return http.csrf()
+        return http.cors().disable()
+                .csrf()
                 .disable()
+                .authenticationManager(authenticationManager)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
                     .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/gateway/real-estate").permitAll()
+                    .requestMatchers( "/gateway/real-estate/**").hasRole(Role.ADMIN.name())
                     .anyRequest().authenticated()
                 .and()
-                .authenticationManager(authenticationManager)
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
