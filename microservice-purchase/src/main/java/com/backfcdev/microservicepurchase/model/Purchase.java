@@ -15,10 +15,10 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "real_estate_id", nullable = false)
+    @Column(name = "real_estate_id")
     private Long realEstateId;
 
     @Column(nullable = false)
@@ -27,7 +27,7 @@ public class Purchase {
     @Column(nullable = false)
     private Double price;
 
-    @Column(name = "purchase_date", nullable = false)
+    @Column(name = "purchase_date")
     private LocalDateTime purchaseDate;
 
 }
