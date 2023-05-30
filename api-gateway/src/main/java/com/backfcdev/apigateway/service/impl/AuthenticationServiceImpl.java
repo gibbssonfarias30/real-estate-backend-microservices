@@ -1,9 +1,11 @@
 package com.backfcdev.apigateway.service.impl;
 
+import com.backfcdev.apigateway.dto.AuthRequest;
+import com.backfcdev.apigateway.dto.AuthResponse;
 import com.backfcdev.apigateway.model.User;
 import com.backfcdev.apigateway.security.UserPrincipal;
 import com.backfcdev.apigateway.security.jwt.JwtProvider;
-import com.backfcdev.apigateway.service.AuthenticationService;
+import com.backfcdev.apigateway.service.IAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,13 +14,14 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationServiceImpl implements IAuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
+
     @Override
-    public User signInAndReturnJWT(User signInRequest) {
+    public AuthResponse signInAndReturnJWT(AuthRequest signInRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword())
         );
@@ -26,8 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         String jwt = jwtProvider.generateToken(userPrincipal);
 
-        User sigInUser = userPrincipal.getUser();
-        sigInUser.setToken(jwt);
-        return sigInUser;
+        return new AuthResponse(jwt);
     }
 }
