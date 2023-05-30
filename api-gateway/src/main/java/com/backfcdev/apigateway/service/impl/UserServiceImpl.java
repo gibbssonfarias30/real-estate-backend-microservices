@@ -1,6 +1,7 @@
 package com.backfcdev.apigateway.service.impl;
 
 import com.backfcdev.apigateway.enums.Role;
+import com.backfcdev.apigateway.exception.ExistsUsernameException;
 import com.backfcdev.apigateway.model.User;
 import com.backfcdev.apigateway.repository.IUserRepository;
 import com.backfcdev.apigateway.service.IUserService;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements IUserService {
                 .role(Role.USER)
                 .createdDate(LocalDateTime.now())
                 .build();
+        if(userRepository.existsByUsername(userCreated.getUsername())) throw new ExistsUsernameException();
+
         return userRepository.save(userCreated);
     }
 
