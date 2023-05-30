@@ -26,21 +26,30 @@ public class RealEstateController {
 
 
     @GetMapping
-    ResponseEntity<List<RealEstate>> findAll(){
-        return ResponseEntity.ok(realEstateService.findAll());
+    ResponseEntity<List<RealEstateDTO>> findAll(){
+        return ResponseEntity.ok(realEstateService.findAll()
+                .stream()
+                .map(this::convertToDto)
+                .toList());
     }
+
     @PostMapping
-    ResponseEntity<Void> save(@RequestBody RealEstate realEstate){
-        RealEstate realEstateCreated = realEstateService.save(realEstate);
+    ResponseEntity<Void> save(@RequestBody RealEstateDTO dto){
+        RealEstate realEstate = realEstateService.save(convertToEntity(dto));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(realEstateCreated.getId()).toUri();
-        log.info("real estate saved: {}", realEstateCreated);
+                .path("/{id}").buildAndExpand(realEstate.getId()).toUri();
+        log.info("real estate saved: {}", realEstate);
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<RealEstate> findById(@PathVariable Long id){
-        return ResponseEntity.ok(realEstateService.findById(id));
+    ResponseEntity<RealEstateDTO> findById(@PathVariable Long id){
+        return ResponseEntity.ok(convertToDto(realEstateService.findById(id)));
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<RealEstateDTO> update(@PathVariable Long id, @RequestBody RealEstateDTO dto ){
+        return ResponseEntity.ok(convertToDto(realEstateService.update(id, convertToEntity(dto))));
     }
 
     @DeleteMapping("/{id}")
