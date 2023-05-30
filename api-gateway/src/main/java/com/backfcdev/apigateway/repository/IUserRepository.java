@@ -16,4 +16,6 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("update User set role=:role WHERE username=:username")
     void updateUserRole(@Param("username") String username, @Param("role") Role role);
+
+    boolean existsByUsername(String username);
 }
