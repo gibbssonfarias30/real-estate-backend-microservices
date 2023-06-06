@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: real-estate-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/real_estate_db?serverTimezone=UTC
+    username: root
+    password: gibb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 3333
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+service:
+  security:
+    secure-key-username: "!KeySecureUsername<>%$"
+    secure-key-password: "!KeySecurePassword<>%$"
+
+
+

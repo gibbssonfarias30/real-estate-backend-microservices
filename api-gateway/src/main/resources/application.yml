@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: api-gateway-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/gateway_db?serverTimezone=UTC
+    username: root
+    password: gibb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    ddl-auto: update
+    show-sql: true
+
+server:
+  port: 5555
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+app:
+  jwt:
+    secret: "RandomSecretKey1223456789!RandomSecretKey1223456789!RandomSecretKey1223456789!"
+    expiration-in-ms: 86400000
+
+service:
+  security:
+    secure-key-username: "!KeySecureUsername<>%$"
+    secure-key-password: "!KeySecurePassword<>%$"
+
+# real-estate.service.url: http://localhost:3333
+# purchase.service.url: http://localhost:4444
