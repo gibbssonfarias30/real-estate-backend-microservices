@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: purchase-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/purchase_db?serverTimezone=UTC
+    username: postgres
+    password: '246'
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 4444
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+service:
+  security:
+    secure-key-username: "!KeySecureUsername<>%$"
+    secure-key-password: "!KeySecurePassword<>%$"
