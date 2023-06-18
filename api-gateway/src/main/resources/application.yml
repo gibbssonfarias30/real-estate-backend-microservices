@@ -1,6 +1,39 @@
+server:
+  port: 5555
+
 spring:
   application:
     name: api-gateway-service
-  config:
-    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:mysql://localhost:3306/gateway_db?serverTimezone=UTC
+    username: root
+    password: gibb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+app:
+  jwt:
+    secret: RandomSecretKey1223456789!RandomSecretKey1223456789!RandomSecretKey1223456789!
+    expiration-in-ms: 86400000
+
+service:
+  security:
+    secure-key-username: !KeySecureUsername<>%$
+    secure-key-password: !KeySecurePassword<>%$
+
 
